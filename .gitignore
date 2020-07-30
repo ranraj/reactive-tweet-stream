@@ -21,3 +21,12 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+tweet-stream-analyser/.project
+.DS_Store
+**/.settings/org.eclipse.core.resources.prefs
+**/.classpath
+**/.project
+**/org.eclipse.m2e.core.prefs
+**/org.eclipse.wst.common.project.facet.core.xml
+**/org.eclipse.jdt.core.prefs
+tweet-stream-analyser/tweet-stream-analyser-application/src/main/resources/application-secret.properties
