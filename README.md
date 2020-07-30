@@ -17,7 +17,7 @@ This has two project one is server (analyser) module developed using Springboot 
 | npm |
 
 
-Recommendation to clear previous data from the Mongo DB data everytimee.
+Recommendation to clear previous data from the Mongo DB data everytime.
 
 Login into mongo shell and execute bellow commands.
 
@@ -48,3 +48,8 @@ Run
 ```
 npm start
 ```
+This above command automatically start the browser to render the application, incase that is not working use below default url,
+```
+http://localhost:3000/
+```
+![Tweet stream app](http://ranraj.github.io/app_screenshots/covid_tweet_analyser.png)
