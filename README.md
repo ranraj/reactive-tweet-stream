@@ -1,7 +1,7 @@
 ## This Application is reference model for processing live twitter stream data using Spring boot & ReactJS application.
 
 Check out this repository, 
-This has two project one is server (analyser) module written in Springboot and UI module (viewer) written in ReactJS
+This has two project one is server (analyser) module developed using Springboot and UI module (viewer) developed using ReactJS
 
 | Sever Application Tech stack |
 |---|
