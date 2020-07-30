@@ -53,4 +53,4 @@ This above command automatically start the browser to render the application, in
 http://localhost:3000/
 ```
 ### Application sample screenshot
-![Tweet stream app](http://ranraj.github.io/app_screenshots/covid_tweet_analyser.png | width=100))
+![Tweet stream app](http://ranraj.github.io/app_screenshots/covid_tweet_analyser.png)
