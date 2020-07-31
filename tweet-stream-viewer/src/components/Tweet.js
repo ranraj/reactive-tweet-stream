@@ -31,7 +31,7 @@ const Tweet = props => {
             <a href={"http://www.twitter.com/" + tweet.user.screen_name}>{tweet.user.name}</a>
             <span className="screen-name">| @{tweet.user.screen_name} |</span>
           </cite>
-          <small> {Moment(createdDate).format('d MMM')} </small>
+          <small> {Moment(createdDate).format('d MMM HH:mm:ss A')} </small>
           <div className="card-body"><span className="content">{tweet.text}</span></div>
            
           <small >

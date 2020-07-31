@@ -30,3 +30,5 @@ tweet-stream-analyser/.project
 **/org.eclipse.wst.common.project.facet.core.xml
 **/org.eclipse.jdt.core.prefs
 tweet-stream-analyser/tweet-stream-analyser-application/src/main/resources/application-secret.properties
+**/target/**
+**/node_modules/**

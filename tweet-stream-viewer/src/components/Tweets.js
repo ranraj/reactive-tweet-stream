@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Tweet from '../components/Tweet.js'
 
-const TWEET_LIVE_URL = process.env.TWEET_LIVE_URL || "http://localhost:8080/tweets";
+const TWEET_LIVE_URL = process.env.TWEET_LIVE_URL || "http://localhost:8080/stream/tweets";
 
 class Tweets extends Component {
     constructor(props) {

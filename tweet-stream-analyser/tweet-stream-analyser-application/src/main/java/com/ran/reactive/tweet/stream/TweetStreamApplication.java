@@ -42,11 +42,18 @@ public class TweetStreamApplication{
 	public static void main(String[] args) {
 		SpringApplication.run(TweetStreamApplication.class, args);
 	}
-
+	
+	/**
+	 * Rest API Router
+	 * @param reactiveTweetRepository
+	 * @return
+	 */
 	@Bean
 	RouterFunction<ServerResponse> routes(ReactiveTweetRepository reactiveTweetRepository) {
-		return route(GET("/tweets"), request -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
-				.body(reactiveTweetRepository.findWithTailableCursorBy(), Tweet.class));
+		return route(GET("/stream/tweets"), request -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
+				.body(reactiveTweetRepository.findWithTailableCursorBy(), Tweet.class))
+				.andRoute(GET("/tweets"), request -> ok().contentType(MediaType.APPLICATION_JSON)
+				.body(reactiveTweetRepository.findAll(), Tweet.class));
 	}
 
 	@Autowired
@@ -60,11 +67,11 @@ public class TweetStreamApplication{
 
 			String tracks = "#reactive";
 			if (args.length > 0) {
-				log.info("Using arguments as tracks");
+				log.info("Using args to filter tweet tracks");
 				tracks = String.join(",", args);
 			}
 
-			log.info("Filtering tracks [{}]", tracks);
+			log.info("Tweet tracks [{}]", tracks);
 			body.add("track", tracks);
 
 			ExchangeFilterFunction filter = (currentRequest, next) -> next.exchange(ClientRequest
@@ -80,7 +87,8 @@ public class TweetStreamApplication{
 						return tweet;
 					});
 
-			tweetRepo.saveAll(tweets).subscribe(System.out::println);
+			tweetRepo.saveAll(tweets)
+					 .subscribe(tweet -> log.info(tweet.toString()));
 
 		};
 	}

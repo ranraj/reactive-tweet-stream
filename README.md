@@ -17,16 +17,24 @@ This has two project one is server (analyser) module developed using Springboot 
 | ReactJS | 
 | npm |
 
+### Configure Mongo DB collection
 
-> :warning: ** This appliation clears previous execution data from configured database on every new run. Please keep your data backup, incase if it is valueable to you.
+This tweets table is capped collection with limited size, this is effective when handling infinite stream of data.
+> :warning: Mongo db overwrites the old document, when it find no space for new document. This is the default behaviour for capped collection. Make nessary changes, if you need the persisted data useful.
+Recommended to clear previous collected data on every run, this would provide more readablity.
 
-Login into mongo shell and execute bellow commands to view tweets data.
+
+Login into mongo shell and execute bellow commands to setup collection.
 
 ```
 use tweetstream;
+db.dropDatabase();
+db.createCollection("tweets", {capped:true, max:1500, size:1000000});
 db.find.tweets();
 ```
-### Configure Twitter oauth properties
+
+
+### Configure Twitter oAuth properties
 
 - Login to https://apps.twitter.com
 - Create a New Application and note down the Consumer Key, Consumer Secret, Access Token and Access Token Secret.
@@ -66,3 +74,17 @@ This above command automatically start the browser to render the application, in
 ```
 ### Application sample screenshot
 ![Tweet stream app](http://ranraj.github.io/app_screenshots/covid_tweet_analyser_medium.png)
+
+### APIs
+|Name| findAllTweets |
+|---|---|
+|URL | http://localhost:8080/tweets|
+|Method | GET |
+|Content-Type | application/json|
+|Notes|| 
+|Name| findAllTweets (event stream) |
+|---|---|
+|URL | http://localhost:8080/stream/tweets|
+|Method | GET |
+|Content-Type | text/evet-stream|
+|Notes|Infinite stream of Server Sent Events using tailable cursor to find Tweets collection|
