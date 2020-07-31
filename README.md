@@ -1,4 +1,4 @@
-## This Application is reference model for processing live twitter stream data using Spring boot & ReactJS application.
+## This Application is demo project for processing live twitter stream data using Spring boot & ReactJS application.
 
 Check out this repository, 
 This has two project one is server (analyser) module developed using Springboot and UI module (viewer) developed using ReactJS
@@ -10,6 +10,7 @@ This has two project one is server (analyser) module developed using Springboot 
 | Maven 3+|
 | MongoDB |
 | Java 8+ |
+| Stanford corenlp|
 
 | Client Application tech statck |
 |---|
@@ -17,15 +18,26 @@ This has two project one is server (analyser) module developed using Springboot 
 | npm |
 
 
-Recommendation to clear previous data from the Mongo DB data everytime.
+> :warning: ** This appliation clears previous execution data from configured database on every new run. Please keep your data backup, incase if it is valueable to you.
 
-Login into mongo shell and execute bellow commands.
+Login into mongo shell and execute bellow commands to view tweets data.
 
 ```
 use tweetstream;
-db.dropDatabase();
-db.createCollection("tweets", {capped:true, max:1500, size:1000000});
+db.find.tweets();
 ```
+### Configure Twitter oauth properties
+
+- Login to https://apps.twitter.com
+- Create a New Application and note down the Consumer Key, Consumer Secret, Access Token and Access Token Secret.
+- Edit the /src/main/resources/application-secret.properties and add values to below properties.
+```
+twitter.consumer-key=
+twitter.consumer-secret=
+twitter.token=
+twitter.secret=
+```
+
 
 ### Spring boot server Application
 Compile
@@ -50,7 +62,7 @@ npm start
 ```
 This above command automatically start the browser to render the application, incase that is not working use below default url,
 ```
-http://localhost:3000/
+(http://localhost:3000/)[http://localhost:3000/]
 ```
 ### Application sample screenshot
-![Tweet stream app](http://ranraj.github.io/app_screenshots/covid_tweet_analyser.png)
+![Tweet stream app](http://ranraj.github.io/app_screenshots/covid_tweet_analyser_medium.png)
