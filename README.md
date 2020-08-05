@@ -10,6 +10,7 @@ This has two project one is server (analyser) module developed using Springboot 
 | Maven 3+|
 | MongoDB |
 | Java 8+ |
+| Twitter4j |
 | Stanford corenlp|
 
 | Client Application tech statck |
@@ -82,6 +83,8 @@ This above command automatically start the browser to render the application, in
 |Method | GET |
 |Content-Type | application/json|
 |Notes|| 
+
+
 |Name| findAllTweets (event stream) |
 |---|---|
 |URL | http://localhost:8080/stream/tweets|
