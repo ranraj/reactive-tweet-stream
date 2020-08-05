@@ -24,7 +24,7 @@ class Tweets extends Component {
         this.setState(Object.assign({}, { data: newData }));
     }
     render() {
-        const renderTweet = tweet => <Tweet key={tweet.id_str} content={tweet}></Tweet>;
+        const renderTweet = tweet => <Tweet key={tweet.id} content={tweet}></Tweet>;
         return (
             <div className="card">
                 <div className="card-body">

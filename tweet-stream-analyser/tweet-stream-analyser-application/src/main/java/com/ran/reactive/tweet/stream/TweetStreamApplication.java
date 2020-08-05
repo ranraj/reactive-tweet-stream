@@ -4,6 +4,10 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,63 +36,63 @@ import com.ran.reactive.tweet.stream.nlp.SentimentAnalyzer;
 import com.ran.reactive.tweet.stream.repository.ReactiveTweetRepository;
 
 import reactor.core.publisher.Flux;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
+import twitter4j.conf.Configuration;
 
 @EnableReactiveMongoRepositories
 @SpringBootApplication(exclude = { MongoAutoConfiguration.class, MongoDataAutoConfiguration.class })
-public class TweetStreamApplication{
+public class TweetStreamApplication {
 
 	private static Logger log = LoggerFactory.getLogger(TweetStreamApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(TweetStreamApplication.class, args);
 	}
-	
+
 	/**
 	 * Rest API Router
+	 * 
 	 * @param reactiveTweetRepository
 	 * @return
 	 */
 	@Bean
 	RouterFunction<ServerResponse> routes(ReactiveTweetRepository reactiveTweetRepository) {
-		return route(GET("/stream/tweets"), request -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
-				.body(reactiveTweetRepository.findWithTailableCursorBy(), Tweet.class))
-				.andRoute(GET("/tweets"), request -> ok().contentType(MediaType.APPLICATION_JSON)
-				.body(reactiveTweetRepository.findAll(), Tweet.class));
+		return route(GET("/stream/tweets"),
+				request -> ok().contentType(MediaType.TEXT_EVENT_STREAM)
+						.body(reactiveTweetRepository.findWithTailableCursorBy(), Tweet.class)).andRoute(GET("/tweets"),
+								request -> ok().contentType(MediaType.APPLICATION_JSON)
+										.body(reactiveTweetRepository.findAll(), Tweet.class));
 	}
 
 	@Autowired
-	private SentimentAnalyzer sentimentAnalyzer;	 
+	private SentimentAnalyzer sentimentAnalyzer;
 
 	@Bean
-	public CommandLineRunner tweetBot(TwitterOAuth twitterOAuth, ReactiveTweetRepository tweetRepo) {
+	public CommandLineRunner tweetBot(Configuration twitterConfiguration, TwitterOAuth twitterOAuth,
+			ReactiveTweetRepository tweetRepo) {
 
 		return args -> {
-			MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 
-			String tracks = "#reactive";
-			if (args.length > 0) {
-				log.info("Using args to filter tweet tracks");
-				tracks = String.join(",", args);
-			}
+			final String[] tracks = (args.length > 0) ? args : new String[] { "#reactive" };
 
-			log.info("Tweet tracks [{}]", tracks);
-			body.add("track", tracks);
-
-			ExchangeFilterFunction filter = (currentRequest, next) -> next.exchange(ClientRequest
-					.from(currentRequest).header(HttpHeaders.AUTHORIZATION, twitterOAuth
-							.oAuth1Header(currentRequest.url(), currentRequest.method(), body.toSingleValueMap()))
-					.build());
-			WebClient webClient = WebClient.builder().filter(filter).build();
-
-			Flux<Tweet> tweets = webClient.post().uri(TwitterApiEndpoints.TWITTER_STATUSES_STREAM_API_URL.getValue())
-					.contentType(MediaType.APPLICATION_FORM_URLENCODED).body(BodyInserters.fromFormData(body))
-					.exchange().flatMapMany(clientResponse -> clientResponse.bodyToFlux(Tweet.class)).map(tweet -> {
-						tweet.setSentiment(sentimentAnalyzer.getSentiment(tweet.getText()));
-						return tweet;
-					});
-
-			tweetRepo.saveAll(tweets)
-					 .subscribe(tweet -> log.info(tweet.toString()));
+			Flux<Tweet> tweetList = Flux.create(sink -> {
+				TwitterStream twitterStream = new TwitterStreamFactory(twitterConfiguration).getInstance();
+				twitterStream.onStatus( status -> {
+					Tweet tweet = Tweet.fromStatus(status);					
+					sink.next(tweet);	
+				});
+				twitterStream.onException(sink::error);
+				twitterStream.filter(tracks);
+				sink.onCancel(twitterStream::shutdown);
+			});
+			Flux<Tweet> tweets = tweetList.map(tweet -> {
+				tweet.setSentiment(sentimentAnalyzer.getSentiment(tweet.getText()));
+				return tweet;
+			});
+			tweetRepo
+					.saveAll(tweets)					
+					.subscribe(tweet -> log.info(tweet.toString()));
 
 		};
 	}

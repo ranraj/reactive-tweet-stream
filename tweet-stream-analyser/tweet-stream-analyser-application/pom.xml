@@ -14,10 +14,14 @@
 	<name>tweet-stream-analyser-application</name>
 	<packaging>jar</packaging>
 	<url>http://ranraj.github.io</url>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<twitter4j.version>4.0.6</twitter4j.version>
 		<stanford.core.nlp>4.0.0</stanford.core.nlp>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.ran.reactive</groupId>
@@ -58,13 +62,29 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Twitter -->
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-core</artifactId>
+			<version>${twitter4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-async</artifactId>
+			<version>${twitter4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.twitter4j</groupId>
+			<artifactId>twitter4j-stream</artifactId>
+			<version>${twitter4j.version}</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

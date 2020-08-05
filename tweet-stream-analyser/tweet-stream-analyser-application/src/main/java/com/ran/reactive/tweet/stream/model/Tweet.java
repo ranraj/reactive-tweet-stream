@@ -1,5 +1,7 @@
 package com.ran.reactive.tweet.stream.model;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import twitter4j.Status;
 
 @Document(collection = "tweets")
 @Getter
@@ -24,7 +27,7 @@ public class Tweet {
     private String id;
 
     @JsonProperty("created_at")
-    private String createdAt;
+    private Date createdAt;
 
     @JsonProperty("text")
     private String text;
@@ -37,6 +40,19 @@ public class Tweet {
     }
     
     private Sentiment sentiment;
+
+	public static Tweet fromStatus(Status status) {
+		return new Tweet(String.valueOf(status.getId()),
+				status.getCreatedAt(), status.getText(), User.fromTwitter4jUser(status.getUser()));
+	}
+
+	public Tweet(String id, Date createdAt, String text, User user) {
+		this.id = id;
+		this.createdAt = createdAt;
+		this.text = text;
+		this.user = user;
+		
+	}
    
      
 }

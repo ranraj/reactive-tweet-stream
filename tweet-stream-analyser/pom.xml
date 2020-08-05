@@ -23,8 +23,7 @@
 		</dependency>
 	</dependencies>
 
-	<modules>
-		<module>tweet-stream-auth</module>
+	<modules>		
 		<module>tweet-stream-analyser-application</module>    
   </modules>
 
