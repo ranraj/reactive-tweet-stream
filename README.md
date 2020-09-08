@@ -33,7 +33,7 @@ Login into mongo shell and execute bellow commands to setup collection.
 use tweetstream;
 db.dropDatabase();
 db.createCollection("tweets", {capped:true, max:1500, size:1000000});
-db.find.tweets();
+db.tweets.find();
 ```
 
 
