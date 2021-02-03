@@ -21,7 +21,7 @@ class Tweets extends Component {
     updateTweets(tweets) {
         console.log(tweets)
         let newData = [tweets, ...this.state.data]        
-        this.setState(Object.assign({}, { data: newData }));
+        this.setState(Object.assign({}, { data: newData.slice(0,20) }));
     }
     render() {
         const renderTweet = tweet => <Tweet key={tweet.id} content={tweet}></Tweet>;

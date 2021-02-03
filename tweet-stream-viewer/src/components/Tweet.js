@@ -4,10 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 
 const Tweet = props => {
-  const tweet = props.content;
-  const createdDate = new Date(tweet.created_at);
-  console.log(tweet.created_at);
-  console.log(createdDate);
+  const tweet = props.content;  
+  
   const colorMap = {
     "VeryPositive": "very_possitive",
     "Positive": "possitive",
@@ -37,7 +35,7 @@ const Tweet = props => {
           <div className="card-body"><span className="content">{tweet.text}</span></div>
            
           <small >
-            <a className="goto" href={"https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id}><FontAwesomeIcon className={boardColor} icon={faExternalLinkAlt} /></a>
+            <a className="goto" href={"https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str}><FontAwesomeIcon className={boardColor} icon={faExternalLinkAlt} /></a>
             &nbsp; {tweet.sentiment.sentiment_type}
           </small>
         </blockquote>

@@ -29,8 +29,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.ran.reactive.tweet.auth.TwitterApiEndpoints;
-import com.ran.reactive.tweet.auth.TwitterOAuth;
 import com.ran.reactive.tweet.stream.model.Tweet;
 import com.ran.reactive.tweet.stream.nlp.SentimentAnalyzer;
 import com.ran.reactive.tweet.stream.repository.ReactiveTweetRepository;
@@ -69,7 +67,7 @@ public class TweetStreamApplication {
 	private SentimentAnalyzer sentimentAnalyzer;
 
 	@Bean
-	public CommandLineRunner tweetBot(Configuration twitterConfiguration, TwitterOAuth twitterOAuth,
+	public CommandLineRunner tweetBot(Configuration twitterConfiguration,
 			ReactiveTweetRepository tweetRepo) {
 
 		return args -> {

@@ -23,7 +23,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import com.ran.reactive.tweet.auth.TwitterOAuth;
 import com.ran.reactive.tweet.auth.TwitterProperties;
 
 import twitter4j.conf.ConfigurationBuilder;
@@ -39,13 +38,7 @@ public class TweetStreamConfiguration {
 	@Bean
 	public TwitterProperties twitterProperties() {
 		return new TwitterProperties();
-	}
-
-	//TODO : Delete
-	@Bean
-	TwitterOAuth twitterAuth(TwitterProperties twitterProperties) {
-		return new TwitterOAuth(twitterProperties);
-	}
+	}	 
 	
 	/**
      * Configuration of Twitter4J including authentication details (OAuth tokens)

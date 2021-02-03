@@ -23,12 +23,7 @@
 	</properties>
 	
 	<dependencies>
-		<dependency>
-			<groupId>com.ran.reactive</groupId>
-			<artifactId>tweet-stream-auth</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
+		
 		<!-- Reactive -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
